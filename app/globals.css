@@ -215,9 +215,9 @@ h3 {
 /* smaller than the letters, and one slow wave once the heading has settled in */
 .hero .wave {
   display: inline-block;
-  font-size: 0.72em;
-  margin-left: 0.08em;
-  vertical-align: 0.06em;
+  font-size: 0.6em;
+  margin-left: 0.06em;
+  vertical-align: 0.12em;
   transform-origin: 70% 80%;
   animation: wave 1.8s ease-in-out 1s 1;
 }
