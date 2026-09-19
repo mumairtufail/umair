@@ -5,7 +5,7 @@ import { chatQA, profile } from "@/data/content";
 
 type Msg = { from: "bot" | "me"; text: string };
 
-const GREETING = "Hi! I'm Umair's assistant. Ask me anything about his work — or tap a question below.";
+const GREETING = "Hi! I'm Umair's assistant. Ask me anything about his work, or tap a question below.";
 
 // Canned answers for now: match free text against the question with the most shared words.
 function answer(question: string) {
@@ -20,7 +20,7 @@ function answer(question: string) {
   }
   return best.score >= 2
     ? best.a
-    : `Good question — that one's best answered by Umair directly: ${profile.email}`;
+    : `Good question. That one's best answered by Umair directly: ${profile.email}`;
 }
 
 export default function ChatWidget() {

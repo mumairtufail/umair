@@ -58,7 +58,7 @@ export default function Nav() {
   return (
     <nav className="nav">
       <div className="nav-inner">
-        <a href="#top" className="brand" aria-label="Umair Tufail — back to top">
+        <a href="#top" className="brand" aria-label="Umair Tufail, back to top">
           <span className="brand-mark mono" aria-hidden="true">
             <i>&lt;</i>ut<b>/</b><i>&gt;</i>
           </span>

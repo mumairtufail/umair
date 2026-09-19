@@ -29,7 +29,7 @@ function SingleRole({ entry }: { entry: Entry }) {
 function MultiRole({ entry }: { entry: Entry }) {
   const newest = entry.roles[0];
   const oldest = entry.roles[entry.roles.length - 1];
-  const span = `${oldest.when.split(" — ")[0]} — ${newest.when.split(" — ").at(-1)}`;
+  const span = `${oldest.when.split(" to ")[0]} to ${newest.when.split(" to ").at(-1)}`;
   return (
     <div>
       <div className="when">{span}</div>
@@ -42,7 +42,6 @@ function MultiRole({ entry }: { entry: Entry }) {
           <li key={r.title} className={i === 0 ? "current" : ""}>
             <div className="sub-role">
               {r.title}
-              {i === 0 && <span className="promo">promoted</span>}
             </div>
             <div className="when">{r.when}</div>
             <Bullets items={r.bullets} />

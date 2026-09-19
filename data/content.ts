@@ -5,7 +5,7 @@ export const profile = {
   location: "Lahore, Pakistan",
   photo: "/me.jpg", // put your photo at public/me.jpg
   summary:
-    "I build Laravel/PHP backends — multi-tenant SaaS, with AI layered in: RAG pipelines, vector search, and LLM-powered chat and voice. 4+ years, 50+ production platforms, working directly with founders.",
+    "I build Laravel/PHP backends for multi-tenant SaaS, with AI layered in: RAG pipelines, vector search, and LLM-powered chat and voice. 4+ years, 50+ production platforms, working directly with founders.",
   links: [
     { label: "Email", href: "mailto:mumairtufail786@gmail.com" },
     { label: "GitHub", href: "https://github.com/mumairtufail" },
@@ -39,10 +39,11 @@ export const experience: Entry[] = [
     roles: [
       {
         title: "Senior Full-Stack Developer (TALL Stack)",
-        when: "Mar 2025 — Present",
+        when: "Mar 2025 to Present",
         bullets: [
-          "Own backend architecture and delivery for multi-tenant SaaS platforms serving thousands of concurrent tenants.",
-          "Lead a team of backend engineers through architecture, code review, and mentoring — primary technical contact for stakeholders.",
+          "Own system design and backend architecture for multi-tenant SaaS platforms serving thousands of concurrent tenants.",
+          "Lead a team of backend engineers through architecture, code review, and mentoring, and act as the primary technical contact for stakeholders.",
+          "Run a PR-based workflow: every change goes through review and approval before it merges.",
           "Own delivery end to end, from sprint planning to post-release support; MySQL and API performance tuned to sub-100ms at peak.",
         ],
       },
@@ -56,16 +57,17 @@ export const experience: Entry[] = [
     roles: [
       {
         title: "Senior Software Engineer",
-        when: "Sep 2024 — Mar 2025",
+        when: "Sep 2024 to Mar 2025",
         bullets: [
-          "Led backend development for SaaS and enterprise apps on Laravel, owning AWS (EC2, S3, CloudFront, Route 53) end to end.",
-          "Built CI/CD pipelines that cut release cycles from hours to minutes.",
-          "Ran the team's code review — no merge without an approved PR — and introduced AI-assisted development workflows.",
+          "Led projects from scratch to final delivery, handling client communication directly: requirements, updates, and sign-off.",
+          "Managed a cross-functional team of backend, frontend, and mobile app developers plus a graphic designer.",
+          "Built the backend APIs on Laravel and owned AWS (EC2, S3, CloudFront, Route 53), with CI/CD that cut releases from hours to minutes.",
+          "Ran the team's code review (no merge without an approved PR) and introduced AI-assisted development workflows.",
         ],
       },
       {
         title: "Junior Software Engineer",
-        when: "Sep 2022 — Sep 2024",
+        when: "Sep 2022 to Sep 2024",
         bullets: [
           "Built REST APIs, database structures, and business logic with Laravel, PHP, and Node.js.",
           "Worked directly with site managers to turn on-ground field workflows into digital tools.",
@@ -86,7 +88,7 @@ export const education: Entry[] = [
       {
         title: "BS, Computer Science",
         when: "Latest",
-        bullets: ["Bachelor's in Computer Science — the next step after the ADP."],
+        bullets: ["Bachelor's in Computer Science, the next step after the ADP."],
       },
     ],
   },
@@ -100,7 +102,7 @@ export const education: Entry[] = [
         title: "ADP, Computer Science",
         when: "Graduated",
         bullets: [
-          "Foundations in software engineering, data structures, and databases — the base four years of production systems were built on.",
+          "Foundations in software engineering, data structures, and databases: the base four years of production systems were built on.",
         ],
       },
     ],
@@ -108,60 +110,114 @@ export const education: Entry[] = [
 ];
 
 export const stack = [
-  { title: "Core — my specialty", core: true, tags: ["PHP", "Laravel (TALL)", "MySQL", "REST APIs", "Multi-tenant", "RBAC"] },
+  { title: "Core · my specialty", core: true, tags: ["PHP", "Laravel (TALL)", "MySQL", "REST APIs", "Multi-tenant", "RBAC"] },
   { title: "Frontend", tags: ["React.js", "Inertia.js", "Livewire", "Alpine.js", "Blade", "Tailwind"] },
   { title: "AI & automation", tags: ["OpenAI / Whisper", "Claude API", "Gemini", "LangChain", "RAG", "Vector DBs"] },
   { title: "Cloud & infra", tags: ["AWS (EC2, S3, CloudFront)", "cPanel / WHM", "Redis", "CI/CD", "Linux", "Git"] },
 ];
 
+// Project cards flip on click: the front shows the screenshot, the back the details.
 export type Project = {
   name: string;
-  image: string; // put screenshots in /public/projects/ — a schematic is shown until the file exists
-  badge: string;
-  href?: string;
-  desc: string;
-  stack: string[];
+  label: string; // small line above the name — status or sector
+  tagline: string; // one line on the front of the card
+  desc: string; // full description on the back
+  stack?: string[]; // tech used — omit if unknown
+  href?: string; // project website: shows a "Visit website" button on both faces
+  image?: string; // screenshot in /public/projects/ — a schematic is drawn until the file exists
+  featured?: boolean; // shown up front; everything else is behind "View more"
 };
 
+// All projects, in display order. `featured` ones show first (2×2); the rest sit behind "View more" (3-column grid).
 export const projects: Project[] = [
   {
-    name: "Lumenia CRM",
-    image: "/projects/lumenia.png",
-    badge: "● Live · lumeniacrm.com",
-    href: "https://lumeniacrm.com",
-    desc: "AI-powered lead-to-revenue CRM with paying customers — AI prospecting, Twilio dialer, auto-responders that qualify leads. Built solo.",
-    stack: ["Laravel", "React", "Redis", "Twilio"],
-  },
-  {
     name: "Domain & Hosting Platform",
-    image: "/projects/domain.png",
-    badge: "Navicosoft",
-    desc: "A GoDaddy competitor with direct Verisign & CentralNic integration under ICANN — plus NWHMCS and Master IDP, a multi-tenant SSO.",
-    stack: ["Laravel", "Verisign", "OpenID Connect"],
+    featured: true,
+    label: "ICANN Accredited · Navicosoft",
+    tagline: "Multi-tenant domain reseller platform with 618+ TLDs",
+    desc: "Domain selling platform built for Navicosoft, an ICANN accredited registrar. Resellers register, transfer, and manage 618+ TLDs through direct registry integrations with Verisign, CentralNic, and Google, on a multi-tenant reseller architecture. It also includes AI-driven domain search, a multi-method payment stack with crypto, and Master IDP, a multi-tenant SSO unifying WHMCS, reseller, and HR platforms.",
+    stack: ["Laravel", "React", "Verisign", "CentralNic", "Google Registry", "WHMCS", "OpenID Connect"],
+    href: "https://resellerfrontend.navicosoft.com",
+    image: "/projects/domainhosting.png",
   },
   {
-    name: "WhatsApp Commerce Assistant",
-    image: "/projects/whatsapp.png",
-    badge: "In progress",
-    desc: "A RAG chatbot on Gemini over a vector-indexed catalog — checks stock, places the order, invoices, and issues credentials, no human step.",
-    stack: ["Gemini", "Vector DB", "Laravel"],
+    name: "DigiBot",
+    featured: true,
+    label: "WhatsApp RAG · Commercial",
+    tagline: "WhatsApp sales and support on autopilot",
+    desc: "A commercial WhatsApp RAG pipeline on the Meta WhatsApp API. It answers customer queries from a Qdrant vector index, creates support tickets automatically, books orders and decrements stock, and keeps reseller and customer pricing separate, with full analytics and reporting.",
+    stack: ["Laravel (TALL)", "Meta WhatsApp API", "OpenAI", "Qdrant", "MySQL"],
+    image: "/projects/whatsapp_rag.png",
+  },
+  {
+    name: "KSA Drop",
+    featured: true,
+    label: "Dropshipping · UAE",
+    tagline: "CRM and Shopify app for a dropshipping company",
+    desc: "A CRM and Shopify app for a UAE dropshipping company. Customers get their own separate login, orders are managed in one place, and the Shopify connection automates the order workflow.",
+    stack: ["Shopify app", "CRM"],
+    href: "https://ksadrop.com",
+    image: "/projects/ksadrop.jpg",
+  },
+  {
+    name: "Lumenia CRM",
+    featured: true,
+    label: "AI CRM · SaaS",
+    tagline: "AI lead-to-revenue CRM for outbound sales teams",
+    desc: "Independently architected an AI-powered CRM with paying customers across multiple countries: an AI prospecting engine, a Twilio softphone dialer with automatic call logging, and AI auto-responders that qualify inbound leads into the pipeline.",
+    stack: ["React", "Laravel", "MySQL", "Redis", "Twilio"],
+    href: "https://lumeniacrm.com",
+    image: "/projects/lumeniacrm.jpg",
   },
   {
     name: "911 Limo",
+    label: "Ride-sharing · World Cup 2026",
+    tagline: "Peer-to-peer ride-sharing platform",
+    desc: "Ride-sharing platform with real-time location tracking, in-app chat, and dynamic fare sharing, built on a Node.js backend with a Laravel and Blade frontend. Carried production traffic during the FIFA World Cup 2026.",
+    stack: ["Node.js", "Laravel", "Blade", "MySQL", "AWS"],
     image: "/projects/911.png",
-    badge: "World Cup 2026",
-    desc: "Ride-sharing backend + AWS — live tracking, in-app chat, dynamic fares. Carried live production traffic during the FIFA World Cup.",
-    stack: ["WebSockets", "AWS", "Geolocation"],
+  },
+  {
+    name: "Air Ideal",
+    label: "ERP · HVAC",
+    tagline: "Billing and approvals ERP for an HVAC company",
+    desc: "ERP for an HVAC company covering the project billing lifecycle, payments received, analytics, and a document approval queue with roles and permissions.",
+    stack: ["Laravel", "PHP", "Blade", "MySQL"],
+    image: "/projects/airideal.jpg",
+  },
+  {
+    name: "Hot Air Balloon & Tours",
+    label: "Tourism · UAE",
+    tagline: "Tour booking website with an admin portal",
+    desc: "Website and admin portal for a UAE tour company. Services, tours, and bookings are all managed from the admin portal.",
+    stack: ["Laravel", "Blade", "MySQL"],
+    image: "/projects/hotairballoon.jpg",
+  },
+  {
+    name: "Medaan",
+    label: "Restaurant · Canada",
+    tagline: "Restaurant website with an admin-managed menu",
+    desc: "Website for a Canadian food restaurant, with the full menu managed from an admin portal.",
+    href: "https://medaan.ca",
+    image: "/projects/medaan.jpg",
+  },
+  {
+    name: "SA Trade Link",
+    label: "Textiles · Pakistan",
+    tagline: "Company website for a textile business",
+    desc: "Website for a local textile company in Pakistan, built to grow their online presence.",
+    stack: ["Bootstrap"],
+    image: "/projects/satradelink.jpg",
   },
 ];
 
 // chat answers
 export const chatQA = [
-  { q: "What does Umair specialize in?", a: "Laravel/PHP backends — specifically multi-tenant SaaS architecture — with AI layered in: RAG pipelines, vector databases, and LLM-integrated chat and voice. He builds the whole backend and self-hosts it." },
-  { q: "Most impressive project?", a: "Lumenia CRM — a live, revenue-generating SaaS he architected solo, with paying customers in multiple countries. Or the domain platform integrating directly with Verisign & CentralNic under ICANN." },
-  { q: "Is he open to work?", a: "Yes — senior/lead engineering roles, plus select contract work in Laravel, multi-tenant systems, or AI integration. Best reached at mumairtufail786@gmail.com." },
-  { q: "What AI has he shipped?", a: "OpenAI (incl. Whisper for voice), Claude, and Gemini — in production. A WhatsApp RAG assistant, voice navigation on a construction app, and AI auto-responders inside Lumenia CRM." },
-  { q: "Where is he based?", a: "Lahore, Pakistan — and he's delivered for clients across Canada, the UAE, Qatar, and the US, working directly with founders." },
+  { q: "What does Umair specialize in?", a: "Laravel/PHP backends, specifically multi-tenant SaaS architecture, with AI layered in: RAG pipelines, vector databases, and LLM-integrated chat and voice. He builds the whole backend and self-hosts it." },
+  { q: "Most impressive project?", a: "Lumenia CRM, a revenue-generating SaaS he architected solo, with paying customers in multiple countries. Or the domain platform integrating directly with Verisign & CentralNic under ICANN." },
+  { q: "Is he open to work?", a: "Yes: senior and lead engineering roles, plus select contract work in Laravel, multi-tenant systems, or AI integration. Best reached at mumairtufail786@gmail.com." },
+  { q: "What AI has he shipped?", a: "OpenAI (incl. Whisper for voice), Claude, and Gemini, all in production. DigiBot (a commercial WhatsApp RAG pipeline), voice navigation on a construction app, and AI auto-responders inside Lumenia CRM." },
+  { q: "Where is he based?", a: "Lahore, Pakistan. He's delivered for clients across Canada, the UAE, Qatar, and the US, working directly with founders." },
 ];
 
 // terminal commands
@@ -174,19 +230,19 @@ export const terminalCommands: Record<string, string> = {
   contact     how to reach me
   hire        (try it)
   clear       clear the screen`,
-  whoami: `Muhammad Umair Tufail — Senior Full-Stack Engineer, Lahore, Pakistan
+  whoami: `Muhammad Umair Tufail, Senior Full-Stack Engineer, Lahore, Pakistan
 Laravel/PHP + AI-integrated backends. 4+ yrs, 50+ production platforms.`,
   stack: `core:     PHP · Laravel · MySQL · Multi-tenant · RBAC
 frontend: React · Inertia · Livewire · Alpine · Tailwind
 ai:       OpenAI/Whisper · Claude · Gemini · RAG · Vector DBs
 cloud:    AWS · Redis · CI/CD · Linux · cPanel/WHM`,
-  projects: `Lumenia CRM        live AI CRM → lumeniacrm.com
+  projects: `Lumenia CRM        AI CRM → lumeniacrm.com
 Domain Platform    direct Verisign/CentralNic, ICANN
-WhatsApp Assistant RAG commerce bot on Gemini
-911 Limo           ride-share backend, World Cup 2026`,
-  experience: `Navicosoft   Senior Full-Stack Dev      Mar 2025 – now
-Tech Joint   Senior Software Engineer   Sep 2024 – Mar 2025
-Tech Joint   Junior Software Engineer   Sep 2022 – Sep 2024`,
+DigiBot            WhatsApp RAG pipeline, Qdrant + OpenAI
+911 Limo           ride-share platform, World Cup 2026`,
+  experience: `Navicosoft   Senior Full-Stack Dev      Mar 2025 to now
+Tech Joint   Senior Software Engineer   Sep 2024 to Mar 2025
+Tech Joint   Junior Software Engineer   Sep 2022 to Sep 2024`,
   contact: `email:    mumairtufail786@gmail.com
 github:   github.com/mumairtufail
 linkedin: linkedin.com/in/mumairtufail`,

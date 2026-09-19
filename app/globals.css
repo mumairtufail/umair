@@ -454,20 +454,6 @@ h3 {
 .roles ul {
   margin-top: 6px;
 }
-.promo {
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  padding: 1px 7px;
-  border-radius: 999px;
-  color: var(--brand-gold);
-  border: 1px solid color-mix(in srgb, var(--brand-gold) 45%, transparent);
-  background: color-mix(in srgb, var(--brand-gold) 10%, transparent);
-}
-.promo::before {
-  content: "↑ ";
-}
 .entry:hover .logo.has-img {
   transform: translateY(-2px) rotate(-3deg);
   box-shadow: var(--shadow);
@@ -548,79 +534,325 @@ h3 {
   }
 }
 
-/* ---------- projects ---------- */
-.projects {
+/* ---------- projects: flip cards (components/ProjectCards.tsx) ---------- */
+.flip-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
 }
-.project {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  overflow: hidden;
-  background: var(--bg-elev);
+/* featured projects: bigger cards, two per row */
+.flip-grid.featured {
+  grid-template-columns: repeat(2, 1fr);
+}
+.flip-grid.more {
+  margin-top: 14px;
+}
+.more-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.more-btn {
+  cursor: pointer;
+  color: var(--text);
+}
+.more-btn svg {
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.more-btn:hover svg {
+  transform: translateY(2px);
+}
+.more-btn svg.up {
+  transform: rotate(180deg);
+}
+.more-btn:hover svg.up {
+  transform: rotate(180deg) translateY(2px);
+}
+@media (max-width: 760px) {
+  .flip-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .flip-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.flip {
+  perspective: 1400px;
+}
+/* both faces share one grid cell, so the card is as tall as its taller face */
+.flip-inner {
+  display: grid;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.3, 1.25, 0.45, 1);
+}
+.flip[data-flipped="true"] .flip-inner {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
-  text-decoration: none;
-  transition: border-color 0.15s, transform 0.15s;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-elev);
+  color: var(--text);
+  text-align: left;
+  font: inherit;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: border-color 0.15s, box-shadow 0.2s;
 }
-.project:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
+.flip-back {
+  transform: rotateY(180deg);
+  padding: 13px 14px;
+  gap: 8px;
+  outline: none;
+  background: linear-gradient(160deg, var(--accent-soft), var(--bg-elev) 55%);
 }
-.thumb {
+
+/* front */
+.flip-front {
   position: relative;
-  aspect-ratio: 16 / 10;
+  cursor: pointer;
+}
+.flip-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  cursor: pointer;
+}
+.flip-cover:focus-visible {
+  outline: 2px solid var(--brand-gold);
+  outline-offset: -2px;
+}
+.flip-front:hover,
+.flip-front:has(.flip-cover:focus-visible) {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  box-shadow: var(--shadow);
+}
+.flip:not([data-flipped="true"]) .flip-inner:has(.flip-front:hover) {
+  transform: rotateY(-4deg) translateY(-2px);
+}
+.flip-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   background: var(--bg-soft);
   border-bottom: 1px solid var(--line);
   overflow: hidden;
 }
-.thumb img {
+.flip-thumb img {
   object-fit: cover;
-  object-position: top;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.thumb svg {
+.flip-thumb svg {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
 }
-.badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  border: 1px solid var(--line);
-  backdrop-filter: blur(6px);
+.flip-front:hover .flip-thumb img {
+  transform: scale(1.05);
 }
-.project-body {
-  padding: 16px;
+.flip-body {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 3px;
+  width: 100%;
+  padding: 11px 14px 12px;
 }
-.project-body h3 {
-  font-size: 1.15rem;
+.flip-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brand-gold);
+}
+.flip-face h3 {
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+.flip-body p {
+  font-size: 13px;
+  color: var(--muted);
+}
+.flip-body .tags {
+  margin-top: 8px;
+}
+.flip-body .tag {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  padding: 2px 8px;
+}
+.flip-front-foot {
+  margin-top: auto;
+  padding-top: 12px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 8px;
 }
-.project-body p {
+.flip-front-foot .btn {
+  position: relative;
+  z-index: 2; /* above .flip-cover */
+  padding: 5px 11px;
+  font-size: 13px;
+}
+.flip-hint {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--faint);
+  transition: color 0.15s;
+}
+.flip-front:hover .flip-hint {
+  color: var(--text);
+}
+.flip-front:hover .flip-hint svg {
+  animation: spin-back 0.6s ease;
+}
+@keyframes spin-back {
+  to { transform: rotate(-360deg); }
+}
+
+/* back */
+.flip-back-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.flip-close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
   color: var(--muted);
-  font-size: 14px;
-  flex: 1;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
 }
-.project .tags .tag {
+.flip-close:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+.flip-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.flip-back .tag {
   font-family: var(--font-mono), monospace;
   font-size: 11px;
 }
-@media (max-width: 640px) {
-  .projects {
-    grid-template-columns: 1fr;
+.flip-actions {
+  margin-top: auto;
+  padding-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.flip-actions .btn {
+  padding: 6px 11px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text);
+}
+.flip-actions .btn.primary {
+  color: var(--bg);
+}
+
+/* reduced motion: cross-fade instead of the 3D turn */
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner,
+  .flip[data-flipped="true"] .flip-inner {
+    transform: none;
+  }
+  .flip-back {
+    transform: none;
+  }
+  .flip-face {
+    backface-visibility: visible;
+    transition: opacity 0.2s !important;
+  }
+  .flip .flip-back,
+  .flip[data-flipped="true"] .flip-front {
+    opacity: 0;
+  }
+  .flip[data-flipped="true"] .flip-back {
+    opacity: 1;
+  }
+}
+
+/* lightbox */
+.lightbox {
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  max-width: min(1128px, 92vw);
+  overflow: visible;
+}
+.lightbox::backdrop {
+  background: rgb(0 0 0 / 0.72);
+  backdrop-filter: blur(4px);
+}
+.lightbox[open] {
+  animation: fade 0.2s ease;
+}
+.lightbox figure {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
+}
+.lightbox img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  background: #000;
+}
+.lightbox figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+.lightbox figcaption span {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: var(--faint);
+}
+.lightbox-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+}
+@media (max-width: 560px) {
+  .lightbox-close {
+    top: -44px;
+    right: 0;
   }
 }
 
@@ -1459,23 +1691,12 @@ kbd {
 }
 
 /* arrows nudge toward where they point */
-.btn svg,
-.project-body h3 svg {
+.btn svg {
   transition: transform 0.2s ease;
 }
 .links .btn:hover svg,
-.project:hover .project-body h3 svg {
+.flip-actions a.btn:hover svg {
   transform: translate(2px, -2px);
-}
-
-/* project thumbnails zoom a touch on hover */
-.thumb img,
-.thumb svg {
-  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.project:hover .thumb img,
-.project:hover .thumb svg {
-  transform: scale(1.04);
 }
 
 /* stack */

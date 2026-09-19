@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-body", weight: ["400
 const mono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500"] });
 
 export const metadata: Metadata = {
-  title: "Umair Tufail — Senior Full-Stack Engineer",
+  title: "Umair Tufail | Senior Full-Stack Engineer",
   description: "Laravel/PHP & AI-integrated backends. 4+ years, 50+ production platforms.",
 };
 

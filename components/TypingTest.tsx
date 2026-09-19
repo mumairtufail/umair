@@ -35,7 +35,7 @@ function saveBest(wpm: number) {
 function verdict(wpm: number) {
   if (wpm >= 90) return "Are you a keyboard? 🤖";
   if (wpm >= 70) return "Fast. Genuinely fast. ⚡";
-  if (wpm >= 50) return "Solid — faster than most people.";
+  if (wpm >= 50) return "Solid, faster than most people.";
   if (wpm >= 30) return "Nice and steady. One more round?";
   return "Warming up. Try again?";
 }
