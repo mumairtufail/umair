@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Download } from "lucide-react";
 import { profile } from "@/data/content";
 import { publicFileExists } from "@/lib/publicFile";
 
@@ -32,6 +32,9 @@ export default function Hero() {
               {l.label} <ArrowUpRight size={14} />
             </a>
           ))}
+          <a className="btn" href={profile.resume} download="Umair-Tufail-Resume.pdf">
+            Resume <Download size={14} />
+          </a>
         </div>
       </div>
       <div className="photo">

@@ -1,21 +1,24 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { experience, education, type Entry } from "@/data/content";
+import { Download } from "lucide-react";
+import { experience, education, profile, type Entry } from "@/data/content";
+import StackList from "@/components/Stack";
 
-const Bullets = ({ items }: { items: string[] }) => (
-  <ul>
-    {items.map((b) => (
-      <li key={b}>{b}</li>
-    ))}
-  </ul>
-);
+const Bullets = ({ items }: { items: string[] }) =>
+  items.length > 0 && (
+    <ul>
+      {items.map((b) => (
+        <li key={b}>{b}</li>
+      ))}
+    </ul>
+  );
 
 function SingleRole({ entry }: { entry: Entry }) {
   const [role] = entry.roles;
   return (
     <div>
-      <div className="when">{role.when}</div>
+      {role.when && <div className="when">{role.when}</div>}
       <div className="role">{role.title}</div>
       <div className="org">
         {entry.org} · {entry.place}
@@ -40,9 +43,7 @@ function MultiRole({ entry }: { entry: Entry }) {
       <ol className="roles">
         {entry.roles.map((r, i) => (
           <li key={r.title} className={i === 0 ? "current" : ""}>
-            <div className="sub-role">
-              {r.title}
-            </div>
+            <div className="sub-role">{r.title}</div>
             <div className="when">{r.when}</div>
             <Bullets items={r.bullets} />
           </li>
@@ -52,49 +53,64 @@ function MultiRole({ entry }: { entry: Entry }) {
   );
 }
 
+const TABS = [
+  { id: "work", label: "Work" },
+  { id: "edu", label: "Education" },
+  { id: "stack", label: "Stack" },
+] as const;
+type Tab = (typeof TABS)[number]["id"];
+
 export default function Experience() {
-  const [tab, setTab] = useState<"work" | "edu">("work");
-  const list = tab === "work" ? experience : education;
+  const [tab, setTab] = useState<Tab>("work");
+  const list = tab === "edu" ? education : experience;
+  const index = TABS.findIndex((t) => t.id === tab);
 
   return (
     <section className="block" id="experience">
       <div className="h-row" data-reveal>
         <h2>Experience</h2>
+        <a className="btn resume-btn" href={profile.resume} download="Umair-Tufail-Resume.pdf">
+          <Download size={14} /> Download resume
+        </a>
       </div>
-      <div className="tabs" role="tablist" data-active={tab === "work" ? 0 : 1} data-reveal>
-        <button
-          role="tab"
-          aria-selected={tab === "work"}
-          className={`tab ${tab === "work" ? "active" : ""}`}
-          onClick={() => setTab("work")}
-        >
-          Work
-        </button>
-        <button
-          role="tab"
-          aria-selected={tab === "edu"}
-          className={`tab ${tab === "edu" ? "active" : ""}`}
-          onClick={() => setTab("edu")}
-        >
-          Education
-        </button>
-      </div>
-      <div className="exp" data-reveal>
-        {list.map((e, i) => (
-          <div className="entry" key={`${tab}-${e.org}`} style={{ "--i": i } as React.CSSProperties}>
-            {e.logoSrc ? (
-              <div className="logo has-img">
-                <Image src={e.logoSrc} alt={`${e.org} logo`} width={96} height={96} />
-              </div>
-            ) : (
-              <div className="logo" aria-hidden="true">
-                {e.logo}
-              </div>
-            )}
-            {e.roles.length === 1 ? <SingleRole entry={e} /> : <MultiRole entry={e} />}
-          </div>
+      <div
+        className="tabs"
+        role="tablist"
+        style={{ "--n": TABS.length, "--i": index } as React.CSSProperties}
+        data-reveal
+      >
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            role="tab"
+            aria-selected={tab === t.id}
+            className={`tab ${tab === t.id ? "active" : ""}`}
+            onClick={() => setTab(t.id)}
+          >
+            {t.label}
+          </button>
         ))}
       </div>
+      {tab === "stack" ? (
+        <StackList />
+      ) : (
+        <div className="exp" data-reveal>
+          {list.map((e, i) => (
+            <div className="entry" key={`${tab}-${e.org}`} style={{ "--i": i } as React.CSSProperties}>
+              {e.logoSrc ? (
+                <div className="logo has-img">
+                  <Image src={e.logoSrc} alt={`${e.org} logo`} width={96} height={96} />
+                </div>
+              ) : (
+                <div className="logo" aria-hidden="true">
+                  {e.logo}
+                </div>
+              )}
+              {e.roles.length === 1 ? <SingleRole entry={e} /> : <MultiRole entry={e} />}
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

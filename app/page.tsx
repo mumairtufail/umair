@@ -1,7 +1,6 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Experience from "@/components/Experience";
-import Stack from "@/components/Stack";
 import Projects from "@/components/Projects";
 import Fun from "@/components/Fun";
 import ChatWidget from "@/components/ChatWidget";
@@ -18,7 +17,6 @@ export default function Home() {
       <div className="wrap" id="top">
         <Hero />
         <Experience />
-        <Stack />
         <Projects />
         <Fun />
         <Footer />

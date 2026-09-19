@@ -41,7 +41,7 @@ const WALK_SPEED = 7;
 const NAV_HEIGHT = 100; // never hide under the sticky nav
 const SLOW_TICK_MS = 200;
 
-const HIDE_SELECTOR = "h1, h2, .btn, .tag, .project, .stack-group, .exp, .tt, .term, .photo, .tabs";
+const HIDE_SELECTOR = "h1, h2, .btn, .tag, .flip, .stack-list, .exp, .tt, .term, .photo, .tabs";
 const TEXT_SELECTOR = "h1, h2";
 
 type Box = { left: number; right: number; line: number };

@@ -12,6 +12,7 @@ export const profile = {
     { label: "LinkedIn", href: "https://linkedin.com/in/mumairtufail" },
   ],
   email: "mumairtufail786@gmail.com",
+  resume: "/umair-tufail-resume.pdf", // downloadable CV in /public
 };
 
 export type Role = {
@@ -87,8 +88,8 @@ export const education: Entry[] = [
     roles: [
       {
         title: "BS, Computer Science",
-        when: "Latest",
-        bullets: ["Bachelor's in Computer Science, the next step after the ADP."],
+        when: "",
+        bullets: [],
       },
     ],
   },
@@ -100,20 +101,25 @@ export const education: Entry[] = [
     roles: [
       {
         title: "ADP, Computer Science",
-        when: "Graduated",
-        bullets: [
-          "Foundations in software engineering, data structures, and databases: the base four years of production systems were built on.",
-        ],
+        when: "",
+        bullets: [],
       },
     ],
   },
 ];
 
+// Shown as compact rows: label on the left, keyword tags on the right. `core` gets the accent color.
 export const stack = [
-  { title: "Core · my specialty", core: true, tags: ["PHP", "Laravel (TALL)", "MySQL", "REST APIs", "Multi-tenant", "RBAC"] },
-  { title: "Frontend", tags: ["React.js", "Inertia.js", "Livewire", "Alpine.js", "Blade", "Tailwind"] },
-  { title: "AI & automation", tags: ["OpenAI / Whisper", "Claude API", "Gemini", "LangChain", "RAG", "Vector DBs"] },
-  { title: "Cloud & infra", tags: ["AWS (EC2, S3, CloudFront)", "cPanel / WHM", "Redis", "CI/CD", "Linux", "Git"] },
+  { title: "Core", core: true, tags: ["PHP", "Laravel (TALL)", "MySQL", "REST APIs", "Multi-tenant", "RBAC"] },
+  { title: "Frontend", tags: ["React", "Inertia.js", "Livewire", "Alpine.js", "Blade", "Tailwind"] },
+  { title: "AI & LLMs", tags: ["OpenAI", "Whisper", "Claude", "Gemini", "LangChain", "RAG", "Qdrant", "FastAPI"] },
+  {
+    title: "Integrations",
+    tags: ["Meta WhatsApp API", "Shopify", "Twilio", "Amadeus", "Google Places", "Verisign & CentralNic"],
+  },
+  { title: "Payments & finance", tags: ["Stripe", "PayPal", "QuickBooks", "Cryptomus", "Blockonomics"] },
+  { title: "Auth & real-time", tags: ["SSO (OpenID Connect)", "Firebase", "Pusher", "Socket.io"] },
+  { title: "Cloud & DevOps", tags: ["AWS", "Redis", "CI/CD", "Linux", "cPanel / WHM", "Git"] },
 ];
 
 // Project cards flip on click: the front shows the screenshot, the back the details.
@@ -134,7 +140,7 @@ export const projects: Project[] = [
     name: "Domain & Hosting Platform",
     featured: true,
     label: "ICANN Accredited · Navicosoft",
-    tagline: "Multi-tenant domain reseller platform with 618+ TLDs",
+    tagline: "A multi-tenant platform where resellers sell and manage domains across 618+ TLDs, connected directly to Verisign, CentralNic and Google.",
     desc: "Domain selling platform built for Navicosoft, an ICANN accredited registrar. Resellers register, transfer, and manage 618+ TLDs through direct registry integrations with Verisign, CentralNic, and Google, on a multi-tenant reseller architecture. It also includes AI-driven domain search, a multi-method payment stack with crypto, and Master IDP, a multi-tenant SSO unifying WHMCS, reseller, and HR platforms.",
     stack: ["Laravel", "React", "Verisign", "CentralNic", "Google Registry", "WHMCS", "OpenID Connect"],
     href: "https://resellerfrontend.navicosoft.com",
@@ -144,7 +150,7 @@ export const projects: Project[] = [
     name: "DigiBot",
     featured: true,
     label: "WhatsApp RAG · Commercial",
-    tagline: "WhatsApp sales and support on autopilot",
+    tagline: "An AI assistant on WhatsApp that answers customers, takes orders, updates stock and opens support tickets on its own.",
     desc: "A commercial WhatsApp RAG pipeline on the Meta WhatsApp API. It answers customer queries from a Qdrant vector index, creates support tickets automatically, books orders and decrements stock, and keeps reseller and customer pricing separate, with full analytics and reporting.",
     stack: ["Laravel (TALL)", "Meta WhatsApp API", "OpenAI", "Qdrant", "MySQL"],
     image: "/projects/whatsapp_rag.png",
@@ -153,7 +159,7 @@ export const projects: Project[] = [
     name: "KSA Drop",
     featured: true,
     label: "Dropshipping · UAE",
-    tagline: "CRM and Shopify app for a dropshipping company",
+    tagline: "A CRM and Shopify app for a dropshipping company, giving each customer their own login and automating every order.",
     desc: "A CRM and Shopify app for a UAE dropshipping company. Customers get their own separate login, orders are managed in one place, and the Shopify connection automates the order workflow.",
     stack: ["Shopify app", "CRM"],
     href: "https://ksadrop.com",
@@ -163,7 +169,7 @@ export const projects: Project[] = [
     name: "Lumenia CRM",
     featured: true,
     label: "AI CRM · SaaS",
-    tagline: "AI lead-to-revenue CRM for outbound sales teams",
+    tagline: "An AI sales CRM that finds leads, calls them from a built-in dialer and qualifies inbound leads with automatic replies.",
     desc: "Independently architected an AI-powered CRM with paying customers across multiple countries: an AI prospecting engine, a Twilio softphone dialer with automatic call logging, and AI auto-responders that qualify inbound leads into the pipeline.",
     stack: ["React", "Laravel", "MySQL", "Redis", "Twilio"],
     href: "https://lumeniacrm.com",
@@ -172,7 +178,7 @@ export const projects: Project[] = [
   {
     name: "911 Limo",
     label: "Ride-sharing · World Cup 2026",
-    tagline: "Peer-to-peer ride-sharing platform",
+    tagline: "A ride-sharing platform with real-time tracking, in-app chat and fare sharing, used during the FIFA World Cup 2026.",
     desc: "Ride-sharing platform with real-time location tracking, in-app chat, and dynamic fare sharing, built on a Node.js backend with a Laravel and Blade frontend. Carried production traffic during the FIFA World Cup 2026.",
     stack: ["Node.js", "Laravel", "Blade", "MySQL", "AWS"],
     image: "/projects/911.png",
@@ -180,7 +186,7 @@ export const projects: Project[] = [
   {
     name: "Air Ideal",
     label: "ERP · HVAC",
-    tagline: "Billing and approvals ERP for an HVAC company",
+    tagline: "An ERP that runs an HVAC company's project billing, payments and document approvals in one place.",
     desc: "ERP for an HVAC company covering the project billing lifecycle, payments received, analytics, and a document approval queue with roles and permissions.",
     stack: ["Laravel", "PHP", "Blade", "MySQL"],
     image: "/projects/airideal.jpg",
@@ -188,15 +194,16 @@ export const projects: Project[] = [
   {
     name: "Hot Air Balloon & Tours",
     label: "Tourism · UAE",
-    tagline: "Tour booking website with an admin portal",
+    tagline: "A tour booking website for a UAE company, with an admin portal to manage tours, services and bookings.",
     desc: "Website and admin portal for a UAE tour company. Services, tours, and bookings are all managed from the admin portal.",
     stack: ["Laravel", "Blade", "MySQL"],
+    href: "https://balloon.lumenialab.com",
     image: "/projects/hotairballoon.jpg",
   },
   {
     name: "Medaan",
     label: "Restaurant · Canada",
-    tagline: "Restaurant website with an admin-managed menu",
+    tagline: "A website for a Canadian restaurant, with a menu the owners update themselves from an admin portal.",
     desc: "Website for a Canadian food restaurant, with the full menu managed from an admin portal.",
     href: "https://medaan.ca",
     image: "/projects/medaan.jpg",
@@ -204,9 +211,10 @@ export const projects: Project[] = [
   {
     name: "SA Trade Link",
     label: "Textiles · Pakistan",
-    tagline: "Company website for a textile business",
+    tagline: "A company website that brings a Pakistani textile business online and shows buyers what they make.",
     desc: "Website for a local textile company in Pakistan, built to grow their online presence.",
     stack: ["Bootstrap"],
+    href: "https://satradelink.com",
     image: "/projects/satradelink.jpg",
   },
 ];

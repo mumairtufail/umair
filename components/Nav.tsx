@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const SECTIONS = [
   { id: "experience", label: "Experience" },
-  { id: "stack", label: "Stack" },
   { id: "projects", label: "Projects" },
   { id: "play", label: "Play" },
 ];
@@ -59,10 +59,7 @@ export default function Nav() {
     <nav className="nav">
       <div className="nav-inner">
         <a href="#top" className="brand" aria-label="Umair Tufail, back to top">
-          <span className="brand-mark mono" aria-hidden="true">
-            <i>&lt;</i>ut<b>/</b><i>&gt;</i>
-          </span>
-          <span className="brand-name">Umair Tufail</span>
+          <Logo />
         </a>
         <div className="nav-links">
           {SECTIONS.map((s) => (

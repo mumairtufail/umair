@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // bottom corners are taken by the buddy's house and the chat button
-  devIndicators: { position: "top-right" },
+  // dev-only badge; top-right would cover the theme toggle in the full-width nav
+  devIndicators: { position: "bottom-left" },
 };
 
 export default nextConfig;

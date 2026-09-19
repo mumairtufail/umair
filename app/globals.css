@@ -104,10 +104,9 @@ h3 {
   background: color-mix(in srgb, var(--bg) 82%, transparent);
   border-bottom: 1px solid var(--line);
 }
+/* full-width bar: logo at the far left of the screen, links + theme toggle at the far right */
 .nav-inner {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 12px 20px;
+  padding: 12px clamp(20px, 3vw, 40px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -118,33 +117,45 @@ h3 {
   font-size: 1.15rem;
   text-decoration: none;
 }
-/* <ut/> mark — same as public/logo/mark.svg (scripts/logo/make-logo.mjs) */
+/* "umair" metro-line wordmark (components/Logo.tsx, drawn by scripts/logo). Role classes recolour it per theme. */
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
 }
-.brand-mark {
-  font-size: 13px;
-  font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  background: var(--bg-elev);
-  color: var(--text);
-  letter-spacing: -0.02em;
-  transition: border-color 0.15s;
+.brand-logo {
+  display: block;
+  height: 30px;
+  width: auto;
+  overflow: visible;
 }
-.brand-mark i {
-  font-style: normal;
-  color: var(--faint);
+.brand-logo .ink-s {
+  stroke: var(--text);
 }
-.brand-mark b {
-  font-weight: 500;
-  color: var(--brand-gold);
+.brand-logo .gold-s {
+  stroke: var(--brand-gold);
 }
-.brand:hover .brand-mark {
-  border-color: var(--brand-gold);
+.brand-logo .ring {
+  fill: var(--bg);
+  stroke: var(--text);
+}
+.brand-logo .head {
+  fill: var(--brand-gold);
+}
+/* the r's gold branch draws itself in on load, and again on hover (switching the animation name restarts it) */
+.brand-logo .branch {
+  stroke-dasharray: 1;
+  animation: branch-draw 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+}
+.brand:hover .brand-logo .branch {
+  animation: branch-redraw 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes branch-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes branch-redraw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
 }
 :root,
 [data-theme="dark"] {
@@ -198,17 +209,21 @@ h3 {
   font-size: clamp(2.2rem, 6vw, 3.2rem);
   line-height: 1.1;
 }
+/* smaller than the letters, and one slow wave once the heading has settled in */
 .hero .wave {
   display: inline-block;
-  animation: wave 2.2s ease-in-out 0.4s 2;
-  transform-origin: 70% 70%;
+  font-size: 0.72em;
+  margin-left: 0.08em;
+  vertical-align: 0.06em;
+  transform-origin: 70% 80%;
+  animation: wave 1.8s ease-in-out 1s 1;
 }
 @keyframes wave {
-  0%, 60%, 100% { transform: rotate(0); }
-  10%, 30% { transform: rotate(14deg); }
-  20% { transform: rotate(-8deg); }
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(12deg); }
   40% { transform: rotate(-4deg); }
-  50% { transform: rotate(10deg); }
+  60% { transform: rotate(10deg); }
+  80% { transform: rotate(0); }
 }
 .hero .tagline {
   margin-top: 6px;
@@ -322,21 +337,19 @@ h3 {
 .tab.active {
   color: var(--text);
 }
-/* the white pill slides under the active tab (two equal tabs) */
+/* the pill slides under the active tab; --n = tab count, --i = active index (set inline) */
 .tabs::before {
   content: "";
   position: absolute;
   top: 3px;
   bottom: 3px;
   left: 3px;
-  width: calc(50% - 3px);
+  width: calc((100% - 6px) / var(--n, 2));
+  transform: translateX(calc(100% * var(--i, 0)));
   border-radius: 6px;
   background: var(--bg-elev);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--line);
   transition: transform 0.35s cubic-bezier(0.3, 0.7, 0.2, 1);
-}
-.tabs[data-active="1"]::before {
-  transform: translateX(100%);
 }
 .exp {
   /* company / university logo tiles — change these two to resize every logo (the timeline follows) */
@@ -489,32 +502,44 @@ h3 {
   to { opacity: 1; transform: none; }
 }
 
-/* ---------- stack ---------- */
-.stack-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-.stack-group {
+/* ---------- stack: one compact card, a row per category ---------- */
+.stack-list {
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: 16px;
   background: var(--bg-elev);
+  padding: 6px 20px;
 }
-.stack-group.core {
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
-  background: linear-gradient(160deg, var(--accent-soft), var(--bg-elev) 60%);
+.stack-row {
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 8px 0;
+  animation: fade 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i, 0) * 45ms) both;
 }
-.stack-group h3 {
+.stack-row + .stack-row {
+  border-top: 1px dashed var(--line);
+}
+.stack-row .tags {
+  gap: 5px;
+}
+.stack-row h3 {
   font-family: var(--font-mono), monospace;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--faint);
-  margin-bottom: 10px;
 }
-.stack-group.core h3 {
+.stack-row.core h3 {
   color: var(--accent);
+}
+.stack-row .tag {
+  font-size: 12px;
+  padding: 1px 8px;
+}
+.stack-row.core .tag {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
 }
 .tags {
   display: flex;
@@ -528,9 +553,15 @@ h3 {
   border: 1px solid var(--line);
   background: var(--bg);
 }
+.resume-btn {
+  padding: 5px 12px;
+  font-size: 13px;
+  align-self: center;
+}
 @media (max-width: 560px) {
-  .stack-grid {
+  .stack-row {
     grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 
@@ -614,6 +645,10 @@ h3 {
   gap: 8px;
   outline: none;
   background: linear-gradient(160deg, var(--accent-soft), var(--bg-elev) 55%);
+  cursor: pointer;
+}
+.flip-back .flip-desc {
+  cursor: text;
 }
 
 /* front */
@@ -1700,16 +1735,10 @@ kbd {
 }
 
 /* stack */
-.stack-group {
-  transition: border-color 0.2s;
-}
-.stack-group:hover {
-  border-color: color-mix(in srgb, var(--text) 35%, var(--line));
-}
 .tag {
   transition: border-color 0.15s, transform 0.15s;
 }
-.stack-group .tag:hover {
+.stack-row .tag:hover {
   border-color: var(--text);
   transform: translateY(-1px);
 }

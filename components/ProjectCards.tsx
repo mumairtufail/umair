@@ -114,6 +114,13 @@ function FlipCard({ p, i, onZoom }: { p: CardData; i: number; onZoom: (p: CardDa
           inert={!flipped}
           tabIndex={-1}
           aria-label={`${p.name} details`}
+          // clicking anywhere on the back flips it again, except on its links/buttons or while selecting text
+          onClick={(e) => {
+            if ((e.target as HTMLElement).closest("a, button")) return;
+            if (window.getSelection()?.toString()) return;
+            flip(false);
+          }}
+          onKeyDown={(e) => e.key === "Escape" && flip(false)}
         >
           <div className="flip-back-head">
             <span className="flip-label">{p.label}</span>

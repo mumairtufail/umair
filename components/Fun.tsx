@@ -18,7 +18,12 @@ export default function Fun() {
         <h2>Take a break</h2>
         <span className="hint">{current.hint}</span>
       </div>
-      <div className="tabs" role="tablist" data-active={TABS.findIndex((t) => t.id === tab)} data-reveal>
+      <div
+        className="tabs"
+        role="tablist"
+        style={{ "--n": TABS.length, "--i": TABS.findIndex((t) => t.id === tab) } as React.CSSProperties}
+        data-reveal
+      >
         {TABS.map((t) => (
           <button
             key={t.id}
