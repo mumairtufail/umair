@@ -124,9 +124,12 @@ h3 {
 }
 .brand-logo {
   display: block;
-  height: 30px;
+  height: 44px; /* wordmark stays ~30px tall; the rest is the SOFTWARE ENGINEER line */
   width: auto;
   overflow: visible;
+}
+.brand-logo .role {
+  fill: var(--muted);
 }
 .brand-logo .ink-s {
   stroke: var(--text);
