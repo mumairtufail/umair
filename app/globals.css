@@ -604,8 +604,10 @@ h3 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (max-width: 480px) {
-  .flip-grid {
+/* phones: one card per row (the .featured selector is more specific, so it's listed too) */
+@media (max-width: 600px) {
+  .flip-grid,
+  .flip-grid.featured {
     grid-template-columns: 1fr;
   }
 }
@@ -1803,4 +1805,59 @@ kbd {
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+/* ---------- phones ---------- */
+.btn {
+  white-space: nowrap;
+}
+.h-row {
+  flex-wrap: wrap;
+}
+@media (max-width: 560px) {
+  .wrap {
+    padding: 0 16px 32px;
+  }
+  /* experience: give the bullet text more width */
+  .exp {
+    --logo-size: 36px;
+    --logo-radius: 10px;
+    padding: 4px 14px;
+  }
+  .entry {
+    gap: 12px;
+    padding: 16px 0;
+  }
+  .entry ul {
+    padding-left: 16px;
+  }
+  .roles > li {
+    padding-left: 16px;
+  }
+  .resume-btn {
+    padding: 6px 11px;
+    font-size: 13px;
+  }
+  /* projects: roomier single-column cards */
+  .flip-body {
+    padding: 13px 16px 14px;
+  }
+  .flip-back {
+    padding: 14px 16px;
+  }
+  .flip-face h3 {
+    font-size: 1.15rem;
+  }
+  /* chat button: smaller and tucked into the corner */
+  .chat-fab {
+    width: 46px;
+    height: 46px;
+    right: 14px;
+    bottom: 14px;
+  }
+  .chat {
+    right: 12px;
+    bottom: 70px;
+    width: calc(100vw - 24px);
+  }
 }

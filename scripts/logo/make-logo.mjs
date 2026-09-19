@@ -1,13 +1,17 @@
 // Generates the portfolio logo set from code (no design app).
 //   npm run logo
 // The design lives in ./umair-mark.mjs. This script writes:
-//   public/logo/        wordmark + icon SVGs and PNGs (dark and light) for socials, CV, GitHub avatar
+//   public/logo/dark/   logo.svg + logo.png for DARK backgrounds (light text)
+//   public/logo/light/  logo.svg + logo.png for LIGHT backgrounds (dark text)
+//                       the wordmark with SOFTWARE ENGINEER spread to span it edge to edge
+//   public/logo/umair-logo.zip   both folders, for sharing
 //   app/                icon.svg, apple-icon.png, favicon.ico (Next.js links these in <head>)
 //   components/logo-svg.ts   the wordmark for the nav, recoloured per theme by CSS
 // SVGs are rendered with sharp, and favicon.ico is packed by hand (PNG-in-ICO).
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 import opentype from "opentype.js";
 import sharp from "sharp";
 import { toD } from "./svg-path.mjs";
@@ -23,16 +27,37 @@ fs.mkdirSync(out, { recursive: true });
 const b = fs.readFileSync(path.join(here, "IBMPlexMono-500.ttf"));
 const monoMed = opentype.parse(b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength));
 
-/** Spaced caps → { d, w }. */
+/** Caps laid out with extra space between glyphs → { d, ink } (ink = bounding box of the drawn letters). */
 function spaced(str, size, tracking) {
   const scale = size / monoMed.unitsPerEm;
   let x = 0;
   const parts = [];
+  const all = new opentype.Path();
   for (const g of monoMed.stringToGlyphs(str)) {
-    parts.push(toD(g.getPath(x, 0, size)));
+    const p = g.getPath(x, 0, size);
+    parts.push(toD(p));
+    all.extend(p);
     x += g.advanceWidth * scale + tracking;
   }
-  return { d: parts.join(" "), w: x - tracking };
+  return { d: parts.join(" "), ink: all.getBoundingBox() };
+}
+
+/** Same, with the spacing solved so the letters' ink spans exactly `width`. */
+function justified(str, size, width) {
+  const tight = spaced(str, size, 0);
+  const gaps = [...str].length - 1;
+  const tracking = (width - (tight.ink.x2 - tight.ink.x1)) / gaps;
+  return spaced(str, size, tracking);
+}
+
+/** Left/right edges of the wordmark's actual ink (in its own units), measured from a render. */
+async function wordmarkInk(c) {
+  const { inner, box } = wordmark(c);
+  const k = 8; // render scale
+  const svg = svgDoc(`${box.x} ${box.y} ${box.w} ${box.h}`, Math.round(box.w * k), Math.round(box.h * k), inner);
+  const { info } = await sharp(Buffer.from(svg)).trim({ threshold: 1 }).toBuffer({ resolveWithObject: true });
+  const left = -info.trimOffsetLeft / k;
+  return { x1: box.x + left, x2: box.x + left + info.width / k };
 }
 
 const svgDoc = (vb, w, h, inner) =>
@@ -40,27 +65,22 @@ const svgDoc = (vb, w, h, inner) =>
 
 const iconSvg = (c) => svgDoc("0 0 512 512", 512, 512, tile(c) + iconInner(c));
 
-/** Wordmark on its own (transparent background). */
-function wordmarkSvg(c, height = 160) {
+/** Wordmark over SOFTWARE ENGINEER, the role spread to run from the left edge of the u to the right edge of the r. */
+async function lockupSvg(c) {
   const { inner, box } = wordmark(c);
-  const w = Math.round((box.w / box.h) * height);
-  return svgDoc(`${box.x} ${box.y} ${box.w} ${box.h}`, w, height, inner);
-}
-
-/** Wordmark over the spaced role line, on a background (for socials / CV headers). */
-function lockupSvg(c) {
-  const { inner, box } = wordmark(c);
-  const role = spaced(ROLE, 22, 6);
+  const ink = await wordmarkInk(c);
+  const role = justified(ROLE, 22, ink.x2 - ink.x1);
   const pad = 40;
-  const W = Math.ceil(Math.max(box.w, role.w) + pad * 2);
+  const W = Math.ceil(box.w + pad * 2);
   const H = Math.ceil(box.h + 70 + pad * 2);
+  const roleX = pad + (ink.x1 - box.x) - role.ink.x1; // line the role's ink up with the wordmark's ink
   return svgDoc(
     `0 0 ${W} ${H}`,
     W,
     H,
     `<rect width="${W}" height="${H}" fill="${c.bg}"/>` +
       `<g transform="translate(${pad - box.x} ${pad - box.y})">${inner}</g>` +
-      `<path transform="translate(${pad} ${pad + box.h + 50})" d="${role.d}" fill="${c.muted}"/>`,
+      `<path transform="translate(${roleX.toFixed(2)} ${pad + box.h + 50})" d="${role.d}" fill="${c.muted}"/>`,
   );
 }
 
@@ -91,28 +111,20 @@ const write = (file, data) => {
   console.log("  ", path.relative(root, file));
 };
 
-// the previous <ut/> set, no longer produced
-for (const old of ["mark-compact.svg"]) fs.rmSync(path.join(out, old), { force: true });
+// one logo, two versions: public/logo/{dark,light}/logo.{svg,png}; anything else in public/logo is removed
+fs.rmSync(out, { recursive: true, force: true });
+for (const [name, c] of [["dark", DARK], ["light", LIGHT]]) {
+  const dir = path.join(out, name);
+  fs.mkdirSync(dir, { recursive: true });
+  const logo = await lockupSvg(c);
+  write(path.join(dir, "logo.svg"), logo);
+  write(path.join(dir, "logo.png"), await sharp(Buffer.from(logo), { density: 288 }).png().toBuffer());
+}
+// bsdtar ships with Windows 10+ and macOS, and writes standard forward-slash zip paths
+execFileSync("tar", ["-a", "-c", "-f", "umair-logo.zip", "dark", "light"], { cwd: out });
+console.log("  ", path.relative(root, path.join(out, "umair-logo.zip")));
 
 const iconDark = iconSvg(DARK);
-const iconLight = iconSvg(LIGHT);
-
-// source SVGs
-write(path.join(out, "mark.svg"), iconDark);
-write(path.join(out, "mark-light.svg"), iconLight);
-write(path.join(out, "wordmark.svg"), wordmarkSvg(DARK));
-write(path.join(out, "wordmark-light.svg"), wordmarkSvg(LIGHT));
-write(path.join(out, "lockup.svg"), lockupSvg(DARK));
-write(path.join(out, "lockup-light.svg"), lockupSvg(LIGHT));
-
-// high-res PNGs for socials / CV / GitHub avatar
-for (const size of [512, 1024]) {
-  write(path.join(out, `mark-${size}.png`), await png(iconDark, size));
-  write(path.join(out, `mark-light-${size}.png`), await png(iconLight, size));
-}
-for (const [name, svg] of [["lockup", lockupSvg(DARK)], ["lockup-light", lockupSvg(LIGHT)]]) {
-  write(path.join(out, `${name}@2x.png`), await sharp(Buffer.from(svg), { density: 192 }).png().toBuffer());
-}
 
 // Next.js metadata files (auto-linked in <head>)
 const app = path.join(root, "app");
