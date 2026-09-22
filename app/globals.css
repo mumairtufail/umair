@@ -980,7 +980,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 13px 14px;
+  padding: 14px;
   text-decoration: none;
 }
 .contact-icon {
@@ -994,6 +994,7 @@ h3 {
   color: var(--brand-gold);
 }
 .contact-text {
+  flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -1013,24 +1014,32 @@ h3 {
 }
 .contact-go {
   flex: none;
+  margin-left: 10px; /* sits at the card's right edge, not next to the text */
   color: var(--faint);
   transition: transform 0.2s ease;
 }
 .contact-card:hover .contact-go {
   transform: translate(2px, -2px);
 }
+/* small square button, inset from the card edge */
 .contact-copy {
   flex: none;
-  width: 42px;
-  border: 0;
-  border-left: 1px solid var(--line);
-  background: none;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 12px 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--bg);
   color: var(--faint);
   cursor: pointer;
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
 .contact-copy:hover {
   color: var(--text);
+  border-color: var(--text);
   background: var(--bg-soft);
 }
 .contact-foot {
