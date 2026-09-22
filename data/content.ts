@@ -36,16 +36,16 @@ export const experience: Entry[] = [
     logo: "N",
     logoSrc: "/logos/navicosoft.png",
     org: "Navicosoft",
-    place: "Lahore, Pakistan",
+    place: "Docklands, Victoria, Australia",
     roles: [
       {
-        title: "Senior Full-Stack Developer (TALL Stack)",
-        when: "Mar 2025 to Present",
+        title: "Senior Backend Developer",
+        when: "Mar 2025 to Jun 2026",
         bullets: [
-          "Own system design and backend architecture for multi-tenant SaaS platforms serving thousands of concurrent tenants.",
-          "Lead a team of backend engineers through architecture, code review, and mentoring, and act as the primary technical contact for stakeholders.",
-          "Run a PR-based workflow: every change goes through review and approval before it merges.",
-          "Own delivery end to end, from sprint planning to post-release support; MySQL and API performance tuned to sub-100ms at peak.",
+          "Built large-scale SaaS and multi-tenant platforms in the domain and hosting ecosystem — WHMCS-style reseller and sub-reseller architectures, WHOIS domain search, ordering and billing workflows, and backend automation.",
+          "Designed and maintained API-driven backend services, optimized database performance, and supported secure, scalable AWS deployments.",
+          "Led a team of backend engineers through system design, code review, and mentoring, running a PR-based workflow where every change is approved before it merges.",
+          "Partnered with frontend teams on mobile-responsive, analytics-enabled features, with a focus on performance, stability, and clean architecture.",
         ],
       },
     ],
@@ -54,7 +54,7 @@ export const experience: Entry[] = [
     logo: "T",
     logoSrc: "/logos/techjoint.png",
     org: "Tech Joint Solutions",
-    place: "Remote",
+    place: "Remote · Canada",
     roles: [
       {
         title: "Senior Software Engineer",
@@ -62,7 +62,7 @@ export const experience: Entry[] = [
         bullets: [
           "Led projects from scratch to final delivery, handling client communication directly: requirements, updates, and sign-off.",
           "Managed a cross-functional team of backend, frontend, and mobile app developers plus a graphic designer.",
-          "Built the backend APIs on Laravel and owned AWS (EC2, S3, CloudFront, Route 53), with CI/CD that cut releases from hours to minutes.",
+          "Built RESTful APIs on Laravel, optimized database performance, and owned AWS deployments (EC2, S3, CloudFront, Route 53) with CI/CD that cut releases from hours to minutes.",
           "Ran the team's code review (no merge without an approved PR) and introduced AI-assisted development workflows.",
         ],
       },
@@ -248,7 +248,7 @@ cloud:    AWS · Redis · CI/CD · Linux · cPanel/WHM`,
 Domain Platform    direct Verisign/CentralNic, ICANN
 DigiBot            WhatsApp RAG pipeline, Qdrant + OpenAI
 911 Limo           ride-share platform, World Cup 2026`,
-  experience: `Navicosoft   Senior Full-Stack Dev      Mar 2025 to now
+  experience: `Navicosoft   Senior Backend Engineer    Mar 2025 to Jun 2026
 Tech Joint   Senior Software Engineer   Sep 2024 to Mar 2025
 Tech Joint   Junior Software Engineer   Sep 2022 to Sep 2024`,
   contact: `email:    mumairtufail786@gmail.com
