@@ -47,6 +47,7 @@ const items: Item[] = [
 const socials = [
   { label: "GitHub", href: "https://github.com/mumairtufail" },
   { label: "LinkedIn", href: "https://linkedin.com/in/mumairtufail" },
+  { label: "Instagram", href: "https://instagram.com/umairtufail.builds" },
 ];
 
 export default function Contact() {
