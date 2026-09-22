@@ -955,6 +955,96 @@ h3 {
   caret-color: var(--term-green);
 }
 
+/* ---------- contact (components/Contact.tsx) ---------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.contact-card {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg-elev);
+  overflow: hidden;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.contact-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  transform: translateY(-2px);
+}
+.contact-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  text-decoration: none;
+}
+.contact-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--brand-gold);
+}
+.contact-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.contact-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+}
+.contact-value {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.contact-go {
+  flex: none;
+  color: var(--faint);
+  transition: transform 0.2s ease;
+}
+.contact-card:hover .contact-go {
+  transform: translate(2px, -2px);
+}
+.contact-copy {
+  flex: none;
+  width: 42px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: none;
+  color: var(--faint);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.contact-copy:hover {
+  color: var(--text);
+  background: var(--bg-soft);
+}
+.contact-foot {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+@media (max-width: 560px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- footer ---------- */
 .footer {
   margin-top: 24px;

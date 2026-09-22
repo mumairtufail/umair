@@ -12,6 +12,8 @@ export const profile = {
     { label: "LinkedIn", href: "https://linkedin.com/in/mumairtufail" },
   ],
   email: "mumairtufail786@gmail.com",
+  phone: "+92 335 4455494", // shown as written; phoneHref is the dialable form
+  phoneHref: "+923354455494",
   resume: "/umair-tufail-resume.pdf", // downloadable CV in /public
 };
 

@@ -7,6 +7,7 @@ const SECTIONS = [
   { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
   { id: "play", label: "Play" },
+  { id: "contact", label: "Contact" },
 ];
 
 type ViewTransitionDoc = Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } };
